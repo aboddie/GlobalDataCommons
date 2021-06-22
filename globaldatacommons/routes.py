@@ -23,7 +23,7 @@ def pullcountryname(countrycode):
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', countries=Country.query.all())
+    return render_template('home.html')
 
 @app.route("/about")
 def about():
