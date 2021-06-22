@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename='main.css') }}">
+	
+	{% if title %}
+	<title>Global Data Commons - {{ title }}</title>
+	{% else %}
+	<title>Global Data Commons</title>
+	{% endif %}
+	
+	{% if chart %}
+	<!-- import plugin for chart script -->
+    <script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
+	{% else %}
+	{% endif %}
+</head>
+<body>
+	<header class="site-header">
+	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+		<div class="container">
+		  <a class="navbar-brand mr-4" href="{{url_for('home')}}">Global Data Commons</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarToggle">
+			<div class="navbar-nav mr-auto">
+			  <a class="nav-item nav-link" href="{{url_for('home')}}">Home</a>
+			  <a class="nav-item nav-link" href="{{url_for('about')}}">About</a>
+			</div>
+		  </div>
+		</div>
+	  </nav>
+	</header>
+	<main role="main" class="container-fluid"> 
+	  <div class="row">
+			<div class="col-md-5">				
+				  <div class="content-section">
+					{% if domain %}
+					<h3>{{ title }} - {{ domain }}</h3>
+					{% elif title %}
+					<h3>{{ title }}</h3>
+					{%else%}
+					<h3>Select a country:</h3>
+					{% endif %}
+					<p class='text-muted'><!-- Select a country to view data. -->
+					  <ul class="list-group">
+						{% if country %}
+							<div class="scrollbar scrollbar-primary">
+								{%for mine in country%}
+									{%if mine.inSDMX=='TRUE' %}
+									<a onclick="allenFunction({{mine.data}},{{mine.sdmx_data}},{{mine.dates}},'{{mine.description}}', '{{mine.source}}')" class="list-group-item list-group-item-light align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{mine.description}}</a> 
+									{% else %}
+									<a onclick="allenFunction({{mine.data}},{{mine.sdmx_data}},{{mine.dates}},'{{mine.description}}', '{{mine.source}}')" class="list-group-item list-group-item-danger align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{mine.description}}</a> 
+									{% endif %}
+		<!-- 							<form action="/select_country/" method="post">
+										<button name="forwardBtn" type="submit">View Data</button>
+									</form> -->
+								{% endfor %}
+							</div>
+						{% else %}
+							{%for country in countries%}
+								<a href="{{url_for('country_pages', country = country.name)}}" class="list-group-item list-group-item-light">{{country.name}}</a>
+							{% endfor %}
+						{% endif %}
+					  </ul>
+					</p>
+				  </div>
+				 </div>
+			<div class="col-md-7">
+				<!-- <h1>Homepage!<h1> -->
+				{% if chart %}
+					<h2 id="myChartTitle" style="text-align:center;">Select an indicator</h2>
+					<!-- bar chart canvas element -->
+					<canvas id="myChart" width="600" height="400"></canvas>
+					<script>
+					// Global parameters:
+					// do not resize the chart canvas when its container does (keep at 600x400px)
+					Chart.defaults.global.responsive = false;
+					 
+					// define the chart data
+					var chartData = {
+
+					  datasets : [{
+						  label: 'NSDP - SDMX',
+						  fill: true,
+						  lineTension: 0.1,
+						  backgroundColor: "rgba(75,192,192,0.4)",
+						  borderColor: "rgba(75,192,192,1)",
+						  borderCapStyle: 'butt',
+						  borderDash: [],
+						  borderDashOffset: 0.0,
+						  borderJoinStyle: 'miter',
+						  pointBorderWidth: 1,
+						  pointHoverRadius: 5,
+						  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+						  pointHoverBorderColor: "rgba(220,220,220,1)",
+						  pointHoverBorderWidth: 2,
+						  pointRadius: 1,
+						  pointHitRadius: 10,
+
+						  spanGaps: false
+					  }, 
+					  {
+						  label: 'Additional Avaliable data',
+						  fill: true,
+						  lineTension: 0.1,
+						  backgroundColor: "rgba(255,112,119,0.4)",
+						  borderColor: "rgba(255,112,119, 1)",
+						  borderCapStyle: 'butt',
+						  borderDash: [],
+						  borderDashOffset: 0.0,
+						  borderJoinStyle: 'miter',
+						  pointBorderWidth: 1,
+						  pointHoverRadius: 5,
+						  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+						  pointHoverBorderColor: "rgba(220,220,220,1)",
+						  pointHoverBorderWidth: 2,
+						  pointRadius: 1,
+						  pointHitRadius: 10,
+
+						  spanGaps: false
+					  }]
+					}
+					 
+					// get chart canvas
+					var ctx = document.getElementById("myChart").getContext("2d");
+					 
+					// create the chart using the chart canvas
+					var myChart = new Chart(ctx, {
+					  type: 'line',
+					  data: chartData,
+					  options: {
+							title: {
+								display: false,
+								text: '  ' 
+							},
+							legend: {
+								display: true,
+								position: 'bottom'
+							},
+							    animation: {
+								duration: 0
+							},
+							scales: {
+								xAxes: [{
+									ticks: {
+									autoSkip: false,
+										userCallback: function(item, index, array) {
+											if (array.length < 12) {
+												return item;
+											} else if (array.length < 240) {
+												if (!(index % 12)) return item;
+											} else {
+												if (!(index % 60)) return item;
+											}
+										}
+									},
+									gridLines: {
+										display:false
+									}
+								}],
+								yAxes: [{
+									gridLines: {
+										display:false
+									}   
+								}]
+							}
+						}
+					});
+					</script>
+					<p id="caption"></p>
+						<div class="scrollbar2 scrollbar-primary">
+							<table id="myTable" class="table table-bordered table-striped tableFixHead table-hover" style="display:none;">
+								<thead class="thead-light">
+									<tr>
+									  <th></th>
+									  <th>Jan</th>
+									  <th>Feb</th>
+									  <th>Mar</th>
+									  <th>Apr</th>
+									  <th>May</th>
+									  <th>Jun</th>
+									  <th>Jul</th>
+									  <th>Aug</th>
+									  <th>Sep</th>
+									  <th>Oct</th>
+									  <th>Nov</th>
+									  <th>Dec</th>
+									</tr>
+								</thead>
+								<tbody id="myTableBody"> 
+								</tbody>
+							</table >
+						</div>
+				<script>
+				function allenFunction(data, sdmxdata, labels, indicator, source) {
+					document.getElementById("myChartTitle").innerHTML = indicator;
+					myChart.data.datasets[0].data = sdmxdata;
+					myChart.data.datasets[1].data = data;
+					myChart.data.labels = labels;
+					document.getElementById("caption").innerHTML = "<b>"+"Source: " + source+"<b>";
+					<!-- myChart.options.title.text = indicator; -->
+					myChart.update();
+					var table = document.getElementById("myTable");
+					var old_tbody = document.getElementById("myTableBody");
+					var new_tbody = document.createElement('tbody');
+					
+					var len = labels.length;
+					var startyear = parseInt(labels[0].substring(0, 4));
+					var endyear = parseInt(labels[len-1].substring(0, 4));
+					var i = 0
+					var years = endyear - startyear;
+					for (;i < years+1;i++){
+						var row = new_tbody.insertRow(-1);
+						var cell = row.insertCell(0);
+						var currentyear = startyear + i;
+						cell.innerHTML = "<b>"+currentyear+"<b>";  
+						var j = 1;
+						for(;j < 13;j++){
+							var cell = row.insertCell(j);
+							var datapoint = sdmxdata[(i*12)+(j-1)];
+							color ="black";
+							if (datapoint == null ){
+								datapoint = data[(i*12)+(j-1)]
+								color ="red";
+							}
+							
+							if (datapoint == null ){
+								cell.innerHTML = "n.a.";
+							} else {
+								cell.innerHTML = datapoint.toFixed(1).fontcolor(color);
+							}
+							
+						}
+					}
+					new_tbody.id = "myTableBody";
+					table.replaceChild(new_tbody, old_tbody);
+					table.style.display = "block";
+				}
+				</script>
+				{% else %} 
+				<h2>Global Data Commons POC!</h2> 
+				<p>On this webpage you will find the information you will find on the Global Data Commons. Data in red will not be avaliable unless the implementation is changed.</p> 
+				{% endif %}
+			</div>
+	  </div>
+	</main> 
+	
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+
+  
+  </body>
+</html>
