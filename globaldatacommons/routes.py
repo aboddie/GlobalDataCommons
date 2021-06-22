@@ -8,7 +8,7 @@ from globaldatacommons import app
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', countries =[Country(code='AL1', name='Albania Enhanced', countrystandard='eGDDS')])
+    return render_template('layout2Column.html', countries =[Country(code='AL1', name='Albania Enhanced', countrystandard='eGDDS')])
 
 @app.route("/about")
 def about():
