@@ -6,4 +6,4 @@ from globaldatacommons import app
 @app.route("/")
 @app.route("/home")
 def about():
-    return "<h1>Allen made this!<h1>"
+    render_template('home.html', countries=[])
