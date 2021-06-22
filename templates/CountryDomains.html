@@ -1,0 +1,142 @@
+{% extends "layout2column.html" %}
+
+{% block chartplugin %}
+	<script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
+{% endblock chartplugin%}
+
+{% block listcontent %}
+	{%for mine in country%}
+		{%if mine.inECOFIN==1 %}
+			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}},'{{mine.dsd}}')" class="list-group-item list-group-item-light align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{ mine.indicator_code }}</a> 
+		{% else %}
+			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}},'{{mine.dsd}}')" class="list-group-item list-group-item-danger align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{ mine.indicator_code }}</a> 
+		{% endif %}
+	{% endfor %}
+{% endblock listcontent %}
+
+{% block righthandcontent %}
+	<h2 id="myChartTitle" style="text-align:center;">Select an indicator</h2>
+	<!-- bar chart canvas element -->
+	<canvas id="myChart"></canvas>
+	<script>
+	// Global parameters:
+	// do not resize the chart canvas when its container does (keep at 600x400px)  width="600" height="400"
+	<!-- Chart.defaults.global.responsive = false; -->
+	 
+	// define the chart data
+	var chartData = {
+
+	  datasets : [{
+		  <!-- label: 'NSDP - SDMX', -->
+		  fill: true,
+		  lineTension: 0.1,
+		  backgroundColor: "rgba(75,192,192,0.4)",
+		  borderColor: "rgba(75,192,192,1)",
+		  borderCapStyle: 'butt',
+		  borderDash: [],
+		  borderDashOffset: 0.0,
+		  borderJoinStyle: 'miter',
+		  pointBorderWidth: 1,
+		  pointHoverRadius: 5,
+		  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+		  pointHoverBorderColor: "rgba(220,220,220,1)",
+		  pointHoverBorderWidth: 2,
+		  pointRadius: 1,
+		  pointHitRadius: 10,
+
+		  spanGaps: false
+	  }]
+	}
+	 
+	// get chart canvas
+	var ctx = document.getElementById("myChart").getContext("2d");
+	 
+	// create the chart using the chart canvas
+	var myChart = new Chart(ctx, {
+	  type: 'line',
+	  data: chartData,
+	  options: {
+			title: {
+				display: false,
+				text: '  ' 
+			},
+			legend: {
+				display: false,
+				position: 'bottom'
+			},
+				animation: {
+				duration: 0
+			},
+			scales: {
+				xAxes: [{
+					ticks: {
+					autoSkip: false,
+						userCallback: function(item, index, array) {
+							if (array.length < 12) {
+								return item;
+							} else if (array.length < 240) {
+								if (!(index % 12)) return item;
+							} else {
+								if (!(index % 60)) return item;
+							}
+						}
+					},
+					gridLines: {
+						display:false
+					}
+				}],
+				yAxes: [{
+					gridLines: {
+						display:false
+					}   
+				}]
+			}
+		}
+	});
+	</script>
+	<p id="caption"></p>
+		<div class="scrollbar2 scrollbar-primary">
+			<table id="myTable" class="table table-bordered table-striped tableFixHead table-sm" style="display:none;">
+				<thead class="thead-light">
+					<tr>
+					  <th>Field</th>
+					  <th>Code</th>
+					  <th>Description</th>
+					</tr>
+				</thead>
+				<tbody id="myTableBody"> 
+				</tbody>
+			</table >
+		</div>
+	<script>
+	function allenFunction(sdmxdata, labels, fieldsnames, fieldcodes, fielddescriptors, dsd) {
+		document.getElementById("myChartTitle").innerHTML = '';
+		myChart.data.datasets[0].data = sdmxdata;
+		myChart.data.labels = labels;
+		document.getElementById("caption").innerHTML = "<b>"+"DSD: " + dsd+"<b>";
+		myChart.update();
+		var table = document.getElementById("myTable");
+		var old_tbody = document.getElementById("myTableBody");
+		var new_tbody = document.createElement('tbody');
+		
+		var i = 0
+		var numoffields = fieldsnames.length;
+		for (;i < numoffields;i++){
+			var row = new_tbody.insertRow(-1);
+			var cell = row.insertCell(0);
+			cell.innerHTML = "<b>"+fieldsnames[i]+"<b>";
+			var cell = row.insertCell(1);
+			cell.innerHTML = fieldcodes[i];
+			var cell = row.insertCell(2);
+			cell.innerHTML = fielddescriptors[i];
+			if (fielddescriptors[i] == 'Invalid code'){
+				row.className="table-danger"
+				}
+			}
+		new_tbody.id = "myTableBody";
+		table.replaceChild(new_tbody, old_tbody);
+		table.style.display = "block";
+		
+	}
+	</script>
+{% endblock righthandcontent%}

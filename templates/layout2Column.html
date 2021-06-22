@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block bodycontent %}
+	<div class="col">				
+		<div class="content-section">
+		{% if title %}
+		<h3>{{ title }}</h3>
+		{%else%}
+		<h3>eGDDS:</h3>
+		{% endif %}
+		<p class='text-muted'>
+			<ul class="list-group">
+			<div class="scrollbar scrollbar-primary">
+				{% block listcontent %}{% endblock %}
+			</div>
+			</ul>
+		</p>
+		</div>
+	</div>
+	<div class="col">
+		{% block righthandcontent %}{% endblock %}
+	</div>
+	</div>
+{% endblock bodycontent %}
+ 
