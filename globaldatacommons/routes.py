@@ -14,3 +14,6 @@ def home():
 def about():
     return "<h1>Allen made this!<h1>"
 
+@app.route("/report")
+def report():
+    return "<h1>Allen made this!<h1>"
