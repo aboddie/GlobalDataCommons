@@ -17,4 +17,4 @@ def about():
 
 @app.route("/report")
 def report():
-    return f"<h1>My test {os.environ['SQLCONNSTR_GDC_database']}<h1>"
+    return f"<h1>My test {os.environ}<h1>"
