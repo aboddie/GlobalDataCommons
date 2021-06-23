@@ -46,8 +46,14 @@ def country_pages(country):
 
 @app.route('/dataview/<country>/<domain>')
 def country_domain(country,domain):
-    return "<h1>Allen made this!<h1>"
+    countrydata = Series.query.filter(Series.countrycode==country,Series.categorycode==domain)
+    country_name = pullcountryname(country)
+    return render_template('CountryDomains.html', title=country_name, country=countrydata)
 
 @app.route("/report")
 def report():
+    return render_template('report.html', countries=Country.query.all())
+
+@app.route('/reportview/<country>')
+def country_report(country):
     return "<h1>Allen made this!<h1>"
