@@ -2,11 +2,12 @@ from globaldatacommons import db
 
 class Country(db.Model):
     __tablename__ = 'country'
-    code = db.Column(db.String(3),primary_key=True, nullable = False)
+    code = db.Column(db.String(3), primary_key = True, nullable = False)
     name = db.Column(db.String(100), nullable = False)
     series_count = db.Column(db.Integer, default = 0)
     has_category_error = db.Column(db.Boolean, default = False)
     countrystandard = db.Column(db.String(10), nullable = False)
+    nsdp_url = db.Column(db.String(250), nullable = True)
     allcategories = db.relationship('Categories', backref='parentcountry')
     
     def __repr__(self):
@@ -24,6 +25,8 @@ class Categories(db.Model):
     domaincode = db.Column(db.String(10), nullable = False)
     url = db.Column(db.Text, nullable = False)
     series_count = db.Column(db.Integer, default = 0)
+    readable_series = db.Column(db.Integer, default = 0)
+
     
     def __repr__(self):
         return f"Categories: {self.description}"
