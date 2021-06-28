@@ -26,7 +26,7 @@ class Categories(db.Model):
     url = db.Column(db.Text, nullable = False)
     series_count = db.Column(db.Integer, default = 0)
     readable_series = db.Column(db.Integer, default = 0)
-
+    lastupdated = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
     
     def __repr__(self):
         return f"Categories: {self.description}"
@@ -35,8 +35,8 @@ class Series(db.Model):
     __tablename__ = 'series'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     countrycode = db.Column(db.String(3), db.ForeignKey('country.code'), nullable = False)
-    categorycode = db.Column(db.String(10), db.ForeignKey('categories.categorycode'), nullable = False)
-    dsd = db.Column(db.String(250), db.ForeignKey('categories.dsd'), nullable = False)
+    categorycode = db.Column(db.String(10), nullable = False)
+    dsd = db.Column(db.String(250), nullable = False)
     indicator_code = db.Column(db.String(250), nullable = False)
     inECOFIN = db.Column(db.Boolean, nullable = False)
     indent = db.Column(db.Integer, nullable = False, default = 0)

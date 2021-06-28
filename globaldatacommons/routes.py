@@ -64,12 +64,9 @@ def country_report(country):
         if domain.has_error:
             countrydata.append((domain.description, domain.error_text))
         else:
-            All_series = Series.query.with_entities(Series.inECOFIN).filter(Series.countrycode==country,Series.categorycode==domain.categorycode).all()
-            All_series = [x[0] for x in All_series]
-            Anewlist = dict(Counter(All_series).most_common()) 
-            numtrue = Anewlist.get(True,0)
-            numfalse = Anewlist.get(False,0)
-            num = numtrue + numfalse 
+            num = domain.series_count
+            numtrue = domain.readable_series
+            numfalse = num - numtrue
             precent = f'{numtrue/num:.1%}'
             countrydata.append((domain.description, numtrue, numfalse, num, precent, domain.categorycode, domain.countrycode))
             total[0] += numtrue
