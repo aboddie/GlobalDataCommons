@@ -1,6 +1,5 @@
 from flask import render_template, url_for, request
 import csv
-from collections import Counter
 
 from globaldatacommons.models import Country, Categories, Series
 from globaldatacommons import app
@@ -23,7 +22,7 @@ def pullcountryname(countrycode):
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', countries=Country.query.all())
+    return render_template('home.html', countries=Country.query.all().order_by(Country.name))
 
 @app.route("/about")
 def about():
