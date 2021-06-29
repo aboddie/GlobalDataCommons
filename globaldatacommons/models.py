@@ -22,7 +22,6 @@ class Categories(db.Model):
     has_error = db.Column(db.Boolean, default = False) 
     error_text = db.Column(db.String(250), default = '')
     categorycode = db.Column(db.String(10), nullable = False)
-    domaincode = db.Column(db.String(10), nullable = False)
     url = db.Column(db.Text, nullable = False)
     series_count = db.Column(db.Integer, default = 0)
     readable_series = db.Column(db.Integer, default = 0)
