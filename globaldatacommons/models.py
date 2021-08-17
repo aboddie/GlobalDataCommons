@@ -1,4 +1,4 @@
-from globaldatacommons import db
+from . import db
 
 class Country(db.Model):
     __tablename__ = 'country'

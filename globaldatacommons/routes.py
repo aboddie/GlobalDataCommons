@@ -1,8 +1,8 @@
 from flask import render_template, url_for, request
 import csv
 
-from globaldatacommons.models import Country, Categories, Series
-from globaldatacommons import app
+from .models import Country, Categories, Series
+from . import app
 
 
 def pullindicators(countryname):
