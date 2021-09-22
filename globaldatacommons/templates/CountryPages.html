@@ -3,15 +3,19 @@
 {% block listcontent %}
 		{%for items in listitems%}
 			{% if items.has_error == True %}
-				<a class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+				<a class="list-group-item list-group-item-danger d-flex flex-column justify-content-between">
 					<div align-items-start>
 						<div>{{items.description}}</div>
-						<small>{{items.error_text}}</small>
+						<div><small>{{items.error_text}}</small></div>
+						<div><small>last updated: {{items.lastupdated}}</small></div>
 					</div>	
 			{% else %}	
-				<a href="{{url_for('country_domain', country = items.countrycode, domain = items.categorycode)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
-					{{items.description}}
-					<span class="badge badge-primary badge-pill">{{items.series_count}}</span>
+				<a href="{{url_for('country_domain', country = items.countrycode, domain = items.categorycode)}}" class="list-group-item list-group-item-light d-flex justify-content-between">
+					<div align-items-start>
+						<div>{{items.description}} <span class="badge badge-primary badge-pill">{{items.series_count}}</span></div>
+						<div><small>last updated: {{items.lastupdated}}</small></div>
+					</div>
+					
 			{% endif %}
 					
 				</a>
