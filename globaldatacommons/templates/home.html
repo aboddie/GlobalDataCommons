@@ -4,9 +4,9 @@
 	{%for country in countries%}
 		{% if country.countrystandard == 'eGDDS' %}
 			{% if country.has_category_error == True %}
-				<a href="{{url_for('country_pages', country = country.code)}}" class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+				<a href="{{url_for('country_pages', countrycode = country.code)}}" class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
 			{% else %}
-				<a href="{{url_for('country_pages', country = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
+				<a href="{{url_for('country_pages', countrycode = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
 			{% endif %}
 					{{country.name}}
 					<span class="badge rounded-pill bg-primary">{{ country.series_count }}</span>
@@ -24,9 +24,9 @@
 			{%for country in countries%}
 				{% if country.countrystandard == 'SDDS' %}
 					{% if country.has_category_error == True %}
-						<a href="{{url_for('country_pages', country = country.code)}}" class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+						<a href="{{url_for('country_pages', countrycode = country.code)}}" class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
 					{% else %}
-						<a href="{{url_for('country_pages', country = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
+						<a href="{{url_for('country_pages', countrycode = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
 					{% endif %}
 							{{country.name}}
 							<span class="badge rounded-pill bg-primary">{{ country.series_count }}</span>
@@ -47,9 +47,9 @@
 				{%for country in countries%}
 					{% if country.countrystandard == 'SDDS Plus' %}
 						{% if country.has_category_error == True %}
-							<a href="{{url_for('country_pages', country = country.code)}}" class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
+							<a href="{{url_for('country_pages', countrycode = country.code)}}" class="list-group-item list-group-item-danger d-flex justify-content-between align-items-center">
 						{% else %}
-							<a href="{{url_for('country_pages', country = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
+							<a href="{{url_for('country_pages', countrycode = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
 						{% endif %}
 								{{country.name}}
 								<span class="badge rounded-pill bg-primary">{{ country.series_count }}</span>
