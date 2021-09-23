@@ -52,7 +52,7 @@ def country_domain(country,domain):
 
 @app.route("/report")
 def report():
-    return render_template('report.html', countries=Country.query.all())
+    return render_template('report.html', countries=Country.query.order_by(Country.name).all())
 
 @app.route('/reportview/<country>')
 def country_report(country):

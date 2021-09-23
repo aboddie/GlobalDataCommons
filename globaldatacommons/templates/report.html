@@ -1,43 +1,31 @@
-{% extends "layout2Column.html" %}
+{% extends "layout3Column.html" %}
 
-{% block listcontent %}
+{% block lefttitle %}eGDDS:{% endblock lefttitle %}
+
+{% block leftlistcontent %}
 	{%for country in countries%}
 		{% if country.countrystandard == 'eGDDS' %}
             <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
 		{% endif %}
 	{% endfor %}
-{% endblock listcontent %}
+{% endblock leftlistcontent %}
 
-{% block righthandcontent %}
- <div class="content-section">
-	<h3>SDDS:</h3>
-	<p class='text-muted'>
-	  <ul class="list-group">
-		<div class="scrollbar scrollbar-primary">
-			{%for country in countries%}
-				{% if country.countrystandard == 'SDDS' %}
-                    <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
-                {% endif %}
-			{% endfor %}
-		</div>
-	  </ul>
-	</p>
-  </div>
-   </div>
-  <div class="col">
-	  <div class="content-section">
-		<h3>SDDS Plus:</h3>
-		<p class='text-muted'>
-		  <ul class="list-group">
-			<div class="scrollbar scrollbar-primary">
-				{%for country in countries%}
-					{% if country.countrystandard == 'SDDS Plus' %}
-                        <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
-					{% endif %}
-				{% endfor %}
-			</div>
-		  </ul>
-		</p>
-	  </div>
+{% block middletitle %}SDDS:{% endblock middletitle %}
 
-{% endblock righthandcontent %}
+{% block middlelistcontent %}
+	{%for country in countries%}
+		{% if country.countrystandard == 'SDDS' %}
+            <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
+		{% endif %}
+	{% endfor %}
+{% endblock middlelistcontent %}
+
+{% block righttitle %}SDDS Plus:{% endblock righttitle %}
+
+{% block rightlistcontent %}
+	{%for country in countries%}
+		{% if country.countrystandard == 'SDDS Plus' %}
+            <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
+		{% endif %}
+	{% endfor %}
+{% endblock rightlistcontent %}
