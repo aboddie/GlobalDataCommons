@@ -3,11 +3,11 @@ body {
   color: #333333;
   margin-top: 5rem;
 }
-
+/*
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
 }
-
+*/
 a {
 	font-size: small;
 	line-height: normal
@@ -37,10 +37,10 @@ a {
   /* margin-bottom: 20px;  */
 }
 
-ul {
+/*ul {
   font-size: 10px;
   line-height: 0.7
-}
+}*/
 
 .article-title {
   color: #444444;
@@ -95,8 +95,6 @@ a.article-title:hover {
   overflow-y: scroll;
 }
 
-
-
 .scrollbar-primary::-webkit-scrollbar {
 width: 12px;
 background-color: #F5F5F5; }
@@ -105,10 +103,6 @@ background-color: #F5F5F5; }
 border-radius: 10px;
 -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 background-color: #4285F4; }
-
-.list-group-item{
-	
-}
 
 canvas {
     padding: 0;
@@ -138,4 +132,3 @@ th, td{
 }
 
 .tableFixHead thead th { position: sticky; top: 0;} 
-
