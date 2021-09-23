@@ -3,10 +3,17 @@
 {% block bodycontent %}
 	<div class="col">				
 		<div class="content-section">
-		{% if title %}
-		<h3>{{ title }}</h3>
-		{%else%}
-		<h3>eGDDS:</h3>
+		{% if  country_info %}
+			<div class="col d-flex justify-content-between">
+				<h3> {{ country_info.name }}</h3>
+				<div>
+					<a class="btn btn-outline-primary btn-sm" href="{{ country_info.nsdp_url }}" role="button" target="_blank" rel="noopener noreferrer">NSDP Link</a>
+				</div>
+			</div>
+		{% elif title %}
+			<h3>{{ title }}</h3>
+		{% else %}
+			<h3>eGDDS:</h3>
 		{% endif %}
 		<p class='text-muted'>
 			<ul class="list-group">

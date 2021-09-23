@@ -28,20 +28,21 @@ def home():
 def about():
     return "<h1>Allen made this!<h1>"
 
-@app.route('/countryview/<country>')
-def country_pages(country):
-    if country == 'AL1':
+@app.route('/countryview/<countrycode>')
+def country_pages(countrycode):
+    if countrycode == 'AL1':
         countryindicators = pullindicators('Albania')
         mydomain = "Consumer Price Index"
-        return render_template('ALB_JAM.html', chart='TRUE', title=country, domain=mydomain, country=countryindicators)
-    elif country == 'JA1':
+        return render_template('ALB_JAM.html', chart='TRUE', title=countrycode, domain=mydomain, country=countryindicators)
+    elif countrycode == 'JA1':
         countryindicators = pullindicators('Jamaica')
         mydomain = "Consumer Price Index"
-        return render_template('ALB_JAM.html', chart='TRUE', title=country, domain=mydomain, country=countryindicators)
+        return render_template('ALB_JAM.html', chart='TRUE', title=countrycode, domain=mydomain, country=countryindicators)
     else:
-        datadomains = Categories.query.filter(Categories.countrycode==country).all()
-        country_name = pullcountryname(country)
-        return render_template('CountryPages.html', title=country_name, listitems=datadomains)
+        datadomains = Categories.query.filter(Categories.countrycode==countrycode).all()
+        country_info = Country.query.filter(Country.code==countrycode).first()
+        country_name = country_info.name
+        return render_template('CountryPages.html', title=country_name, listitems=datadomains, country_info=country_info)
 
 @app.route('/dataview/<country>/<domain>')
 def country_domain(country,domain):
