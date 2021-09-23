@@ -3,9 +3,7 @@
 {% block listcontent %}
 	{%for country in countries%}
 		{% if country.countrystandard == 'eGDDS' %}
-            <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
-                {{country.name}} Report
-			</a>
+            <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
 		{% endif %}
 	{% endfor %}
 {% endblock listcontent %}
@@ -18,9 +16,7 @@
 		<div class="scrollbar scrollbar-primary">
 			{%for country in countries%}
 				{% if country.countrystandard == 'SDDS' %}
-                    <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
-                        {{country.name}} Report
-                    </a>
+                    <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
                 {% endif %}
 			{% endfor %}
 		</div>
@@ -36,9 +32,7 @@
 			<div class="scrollbar scrollbar-primary">
 				{%for country in countries%}
 					{% if country.countrystandard == 'SDDS Plus' %}
-                        <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
-                            {{country.name}} Report
-                        </a>
+                        <a href="{{url_for('country_report', country = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
 					{% endif %}
 				{% endfor %}
 			</div>
