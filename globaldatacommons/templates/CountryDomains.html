@@ -4,7 +4,9 @@
 	<script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
 {% endblock chartplugin%}
 
-{% block listcontent %}
+{% block lefttitle %} <h3>{{title}}<h3> {% endblock lefttitle %}
+
+{% block leftlistcontent %}
 	{%for mine in country%}
 		{%if mine.inECOFIN==1 %}
 			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}},'{{mine.dsd}}')" class="list-group-item list-group-item-light align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{ mine.indicator_code }}</a> 
@@ -12,9 +14,9 @@
 			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}},'{{mine.dsd}}')" class="list-group-item list-group-item-danger align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{ mine.indicator_code }}</a> 
 		{% endif %}
 	{% endfor %}
-{% endblock listcontent %}
+{% endblock leftlistcontent %}
 
-{% block righthandcontent %}
+{% block rightcontent %}
 	<h2 id="myChartTitle" style="text-align:center;">Select an indicator</h2>
 	<!-- bar chart canvas element -->
 	<canvas id="myChart"></canvas>
@@ -139,4 +141,4 @@
 		
 	}
 	</script>
-{% endblock righthandcontent%}
+{% endblock rightcontent%}

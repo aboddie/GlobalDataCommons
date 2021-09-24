@@ -1,6 +1,15 @@
 {% extends "layout2Column.html" %}
 
-{% block listcontent %}
+{% block lefttitle %}
+<div class="col d-flex justify-content-between">
+	<h3> {{ country_info.name }}</h3>
+	<div>
+		<a class="btn btn-outline-primary btn-sm" href="{{ country_info.nsdp_url }}" role="button" target="_blank" rel="noopener noreferrer">NSDP Link</a>
+	</div>
+</div>
+{% endblock lefttitle %}
+
+{% block leftlistcontent %}
 	{%for items in listitems%}
 		{% if items.has_error %}
 			<ui class="list-group-item list-group-item-danger">
@@ -40,4 +49,4 @@
 			</ui>	
 		{% endif %}	
 	{% endfor %}
-{% endblock listcontent %}
+{% endblock leftlistcontent %}
