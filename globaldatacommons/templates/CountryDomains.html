@@ -4,7 +4,7 @@
 	<script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
 {% endblock chartplugin%}
 
-{% block lefttitle %} <h3>{{title}}<h3> {% endblock lefttitle %}
+{% block lefttitle %} <h3> {{ country_info.name }} </h3> {% endblock lefttitle %}
 
 {% block leftlistcontent %}
 	{%for mine in country%}

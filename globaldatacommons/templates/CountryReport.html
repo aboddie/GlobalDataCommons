@@ -18,7 +18,7 @@
                 <th> {{items[0]}}</th>  
                 <td colspan="4" class="table-danger"> {{items[1]}}</td>
             {% else %}
-                <td><a href="{{url_for('country_domain', country = items[6], domain = items[5])}}"> {{items[0]}}  </a></td>
+                <td><a href="{{url_for('country_domain', countrycode = items[6], domain = items[5])}}"> {{items[0]}}  </a></td>
                 <td> {{items[1]}} </td>
                 <td> {{items[2]}} </td>
                 <td> {{items[3]}} </td>
