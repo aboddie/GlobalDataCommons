@@ -2,38 +2,37 @@
 
 
 {% block bodycontent %}
-<table class="table table-sm table-striped table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th>{{ title }}</th>
-            <th>Readable</th>
-            <th>Not Readable</th>
-            <th>Total</th>
-            <th>Precent Readable</th>
-        </tr>
-    </thead>
-    {%for items in country%}
-        <tr>
-            {% if items|length == 2 %}
-                <th> {{items[0]}}</th>  
-                <td colspan="4" class="table-danger"> {{items[1]}}</td>
-            {% else %}
-                <td><a href="{{url_for('country_domain', countrycode = items[6], domain = items[5])}}"> {{items[0]}}  </a></td>
-                <td> {{items[1]}} </td>
-                <td> {{items[2]}} </td>
-                <td> {{items[3]}} </td>
-                <td> {{items[4]}} </td>
-            {% endif %}
-        </tr>
-    {% endfor %}
-    <thead class="thead-dark">
-        <tr>
+<div class="scrollbar scrollbar-primary">
+    <table class="table table-bordered table-striped tableFixHead table-sm">
+        <thead class="table-primary">
+            <tr>
+                <th>{{ title }}</th>
+                <th>Readable</th>
+                <th>Not Readable</th>
+                <th>Total</th>
+                <th>Precent Readable</th>
+            </tr>
+        </thead>
+        {%for items in country%}
+            <tr>
+                {% if items|length == 2 %}
+                    <th> {{items[0]}}</th>  
+                    <td colspan="4" class="table-danger"> {{items[1]}}</td>
+                {% else %}
+                    <td><a href="{{url_for('country_domain', countrycode = items[6], domain = items[5])}}"> {{items[0]}}  </a></td>
+                    <td> {{items[1]}} </td>
+                    <td> {{items[2]}} </td>
+                    <td> {{items[3]}} </td>
+                    <td> {{items[4]}} </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        <tr class="table-primary">
             <th>Grand Total</th>
             <th>{{ total[0] }}</th>
             <th>{{ total[1] }}</th>
             <th>{{ total[2] }}</th>
             <th>{{ total[3] }}</th>
         </tr>
-    </thead>
 </table>
 {% endblock bodycontent %}
