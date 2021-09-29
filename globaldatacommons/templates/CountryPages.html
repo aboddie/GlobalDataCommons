@@ -18,7 +18,7 @@
 				</div>
 				<div class="row">
 					<p class = "col">last updated: {{items.lastupdated.strftime('%m/%d/%Y')}}</p>
-					<div class = "col d-flex justify-content-between">
+					<div class ="col d-grid gap-2 d-md-flex justify-content-md-end"><!--</div>= "col d-flex justify-content-between"> -->
 						<div>
 							<a class="btn btn-outline-primary btn-sm" href="{{items.url}}" role="button" target="_blank" rel="noopener noreferrer">SDMX File</a>
 						</div>
@@ -27,17 +27,27 @@
 						</div>
 					</div>
 				</div>
-				<div class="row"><small>{{items.error_text}}</small></div>	
+				<div class="row">
+					<div class="error_message">
+						{{items.error_text}}
+					</div>
+				</div>	
 			</ui>
 		{% else %}	
 			<ui class="list-group-item list-group-item-light">				
 				<div class="row">
-					<h6 class="d-flex justify-content-between">{{items.description}}
-					<span class="badge rounded-pill bg-primary">{{items.series_count}}</span></h6>
+					<div class="col d-flex justify-content-between">
+						<div>
+							<h6>{{items.description}}</h6>
+						</div>
+						<div>
+							<span class="badge rounded-pill bg-primary">{{items.series_count}}</span>
+						</div>
+					</div>	
 				</div>
 				<div class="row">
 					<p class = "col">last updated: {{items.lastupdated.strftime('%m/%d/%Y')}}</p>
-					<div class = "col d-flex justify-content-between">
+					<div class ="col d-grid gap-2 d-md-flex justify-content-md-end">
 						<div>
 							<a class="btn btn-outline-primary btn-sm" href="{{items.url}}" role="button" target="_blank" rel="noopener noreferrer">SDMX File</a>
 						</div>

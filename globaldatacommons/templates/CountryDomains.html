@@ -29,7 +29,6 @@
 	var chartData = {
 
 	  datasets : [{
-		  <!-- label: 'NSDP - SDMX', -->
 		  fill: true,
 		  lineTension: 0.1,
 		  backgroundColor: "rgba(75,192,192,0.4)",
@@ -45,7 +44,6 @@
 		  pointHoverBorderWidth: 2,
 		  pointRadius: 1,
 		  pointHitRadius: 10,
-
 		  spanGaps: false
 	  }]
 	}
@@ -97,8 +95,8 @@
 	});
 	</script>
 	<p id="caption"></p>
-		<div class="scrollbar2 scrollbar-primary">
-			<table id="myTable" class="table table-bordered table-striped tableFixHead table-sm" style="display:none;">
+		<div id ="fullTable" class="scrollbar2 scrollbar-primary" style="display:none;">
+			<table id="myTable" class="table table-bordered table-striped tableFixHead table-sm">
 				<thead class="thead-light">
 					<tr>
 					  <th>Field</th>
@@ -117,6 +115,7 @@
 		myChart.data.labels = labels;
 		document.getElementById("caption").innerHTML = "<b>"+"DSD: " + dsd+"<b>";
 		myChart.update();
+		var scroll = document.getElementById("fullTable");
 		var table = document.getElementById("myTable");
 		var old_tbody = document.getElementById("myTableBody");
 		var new_tbody = document.createElement('tbody');
@@ -137,7 +136,7 @@
 			}
 		new_tbody.id = "myTableBody";
 		table.replaceChild(new_tbody, old_tbody);
-		table.style.display = "block";
+		scroll.style.display = "block";
 		
 	}
 	</script>
