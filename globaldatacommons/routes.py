@@ -26,30 +26,31 @@ def country_domain(countrycode,domain):
 def report():
     return render_template('report.html', countries=Country.query.order_by(Country.name).all())
 
-@app.route('/reportview/<country>')
-def country_report(country):
+@app.route('/reportview/<countrycode>')
+def country_report(countrycode):
     #TODO clean this up
-    datadomains = Categories.query.filter(Categories.countrycode==country).all()
-    countrydata = []
+    country = Country.query.filter(Country.code==countrycode).first()
+    datadomains = Categories.query.filter(Categories.countrycode==countrycode).all()
+    domainreport = []
     total = [0,0,0,0]
     for domain in datadomains:
         if domain.has_error:
-            countrydata.append((domain.description, domain.error_text))
+            domainreport.append((domain.description, domain.error_text))
         else:
             num = domain.series_count
             numtrue = domain.readable_series
             numfalse = num - numtrue
             precent = f'{numtrue/num:.1%}'
-            countrydata.append((domain.description, numtrue, numfalse, num, precent, domain.categorycode, domain.countrycode))
+            domainreport.append((domain.description, numtrue, numfalse, num, precent, domain.categorycode, domain.countrycode))
             total[0] += numtrue
-            total[1] += numfalse
-            total[2] += num 
     try: 
-        total[3] = f'{total[0]/total[2]:.1%}'
+        total[2] = country.series_count
+        total[1] = country.series_count - total[0]
+        total[3] = f'{total[0]/country.series_count:.1%}'
     except ZeroDivisionError:
         total[3] = "N.A."
-    return render_template('CountryReport.html', country=countrydata, total=total)
+    return render_template('CountryReport.html', country=domainreport, total=total)
 
 @app.route("/about")
 def about():
-    return "<h1>Allen made this!<h1>"
+    return render_template('layout.html')#"<h1>Allen made this!<h1>"

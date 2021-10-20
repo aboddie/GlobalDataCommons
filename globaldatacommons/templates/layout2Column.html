@@ -4,13 +4,11 @@
 <div class="col">			
     <div class="content-section">
         {% block lefttitle %}{% endblock %}
-        <p class='text-muted'>
-            <ul class="list-group">
-                <div class="scrollbar scrollbar-primary">
-                    {% block leftlistcontent %}{% endblock %}
-                </div>
-            </ul>
-        </p>
+        <ul class="list-group">
+            <div class="scrollbar scrollbar-primary">
+                {% block leftlistcontent %}{% endblock %}
+            </div>
+        </ul>
     </div>
 </div>
 <div class="col">
