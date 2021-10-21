@@ -9,9 +9,9 @@
 {% block leftlistcontent %}
 	{%for mine in country%}
 		{%if mine.inECOFIN==1 %}
-			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}},'{{mine.dsd}}')" class="list-group-item list-group-item-light align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{ mine.indicator_code }}</a> 
+			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}})" class="list-group-item list-group-item-light align-items-stretch flex-shrink-1">{{ mine.indicator_code }}</a> 
 		{% else %}
-			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}},'{{mine.dsd}}')" class="list-group-item list-group-item-danger align-items-stretch flex-shrink-1" style="padding-left:{{ mine.indent * 2 }}px">{{ mine.indicator_code }}</a> 
+			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}})" class="list-group-item list-group-item-danger align-items-stretch flex-shrink-1">{{ mine.indicator_code }}</a> 
 		{% endif %}
 	{% endfor %}
 {% endblock leftlistcontent %}
@@ -94,7 +94,7 @@
 		}
 	});
 	</script>
-	<p id="caption"></p>
+	<p id="caption"><b>DSD: {{ category_info.dsd }} ({{ dsd_version(category_info.structure_signiture) }}) </b></p>
 		<div id ="fullTable" class="scrollbar2 scrollbar-primary" style="display:none;">
 			<table id="myTable" class="table table-bordered table-striped tableFixHead table-sm">
 				<thead class="table-primary">
@@ -109,11 +109,10 @@
 			</table >
 		</div>
 	<script>
-	function allenFunction(sdmxdata, labels, fieldsnames, fieldcodes, fielddescriptors, dsd) {
+	function allenFunction(sdmxdata, labels, fieldsnames, fieldcodes, fielddescriptors) {
 		document.getElementById("myChartTitle").innerHTML = '';
 		myChart.data.datasets[0].data = sdmxdata;
 		myChart.data.labels = labels;
-		document.getElementById("caption").innerHTML = "<b>"+"DSD: " + dsd+"<b>";
 		myChart.update();
 		var scroll = document.getElementById("fullTable");
 		var table = document.getElementById("myTable");

@@ -1,9 +1,20 @@
+from collections import namedtuple
+
 from flask import render_template, url_for, request
-import csv
 
 from .models import Country, Categories, Series
 from . import app
 
+@app.context_processor
+def utility_processor():
+    def dsd_version(signaturestring):
+        Structure_Signature = namedtuple("Structure_Signature","stype,agencyID,ID,version")
+        version = min(eval(signaturestring)).version # TODO clean up
+        if version is not None:
+            return version
+        else:
+            return 'version not specified'    
+    return dict(dsd_version=dsd_version) 
 
 @app.route("/")
 @app.route("/home")
@@ -20,7 +31,8 @@ def country_pages(countrycode):
 def country_domain(countrycode,domain):
     countrydata = Series.query.filter(Series.countrycode==countrycode,Series.categorycode==domain)
     country_info = Country.query.filter(Country.code==countrycode).first()
-    return render_template('CountryDomains.html', country_info=country_info, country=countrydata)
+    category_info = Categories.query.filter(Categories.countrycode==countrycode, Categories.categorycode==domain).first()
+    return render_template('CountryDomains.html', country_info=country_info, country=countrydata, category_info=category_info)
 
 @app.route("/report")
 def report():
