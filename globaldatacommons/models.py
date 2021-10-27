@@ -1,55 +1,61 @@
-from . import db
+import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
 
-class Country(db.Model):
+
+metadata_obj = declarative_base()
+
+
+class Country(metadata_obj):
     __tablename__ = 'country'
-    code = db.Column(db.String(3), primary_key = True, nullable = False)
-    name = db.Column(db.String(100), nullable = False)
-    series_count = db.Column(db.Integer, default = 0)
-    has_category_error = db.Column(db.Boolean, default = False)
-    countrystandard = db.Column(db.String(10), nullable = False)
-    nsdp_url = db.Column(db.String(250), nullable = True)
-    allcategories = db.relationship('Categories', backref='parentcountry')
-    
+    code = sa.Column(sa.String(3), primary_key = True, nullable = False)
+    name = sa.Column(sa.String(100), nullable = False)
+    series_count = sa.Column(sa.Integer, default = 0)
+    has_category_error = sa.Column(sa.Boolean, default = False)
+    countrystandard = sa.Column(sa.String(10), nullable = False)
+    nsdp_url = sa.Column(sa.String(250), nullable = True)
+    allcategories = sa.orm.relationship('Categories')
+
     def __repr__(self):
         return f"Country: {self.name}"
 
-class Categories(db.Model):
+
+class Categories(metadata_obj):
     __tablename__ = 'categories'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    countrycode = db.Column(db.String(3), db.ForeignKey('country.code'), nullable = False)
-    categorycode = db.Column(db.String(10), nullable = False)
-    url = db.Column(db.Text, nullable = False)
-    description = db.Column(db.String(250), nullable = False)
-    dsd = db.Column(db.String(250), default = '')
-    structure_signiture = db.Column(db.String(250), default = '')
-    sdmx_version = db.Column(db.String(3), default = '')
-    has_error = db.Column(db.Boolean, default = False) 
-    error_text = db.Column(db.String(250), default = '')
-    series_count = db.Column(db.Integer, default = 0)
-    readable_series = db.Column(db.Integer, default = 0)
-    lastupdated = db.Column(db.DateTime(timezone=True), onupdate=db.func.now())
-    
-    def __repr__(self):
-        return f"Categories: {self.description}"
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    countrycode = sa.Column(sa.String(3), sa.ForeignKey('country.code'), nullable = False)
+    categorycode = sa.Column(sa.String(10), nullable = False)
+    url = sa.Column(sa.Text, nullable = False)
+    description = sa.Column(sa.String(250), nullable = False)
+    dsd = sa.Column(sa.String(250), default = '')
+    structure_signiture = sa.Column(sa.String(250), default = '')
+    sdmx_version = sa.Column(sa.String(3), default = '')
+    has_error = sa.Column(sa.Boolean, default = False) 
+    error_text = sa.Column(sa.String(250), default = '')
+    series_count = sa.Column(sa.Integer, default = 0)
+    readable_series = sa.Column(sa.Integer, default = 0)
+    lastupdated = sa.Column(sa.DateTime(timezone=True))
 
-class Series(db.Model):
+    def __repr__(self):
+        return f"Category: {self.description}"
+
+
+class Series(metadata_obj):
     __tablename__ = 'series'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    countrycode = db.Column(db.String(3), db.ForeignKey('country.code'), nullable = False)
-    categorycode = db.Column(db.String(10), nullable = False)
-    dsd = db.Column(db.String(250), nullable = False)
-    indicator_code = db.Column(db.String(250), nullable = False)
-    inECOFIN = db.Column(db.Boolean, nullable = False)
-    indent = db.Column(db.Integer, nullable = False, default = 0)
-    freq = db.Column(db.String(1), nullable = False)
-    unit_mult = db.Column(db.Integer, nullable = False, default = 0)
-    indicator_description = db.Column(db.Text, nullable = False)
-    sdmx_data = db.Column(db.Text, nullable = False)
-    dates = db.Column(db.Text, nullable = False)
-    fieldnames = db.Column(db.Text, nullable = False)
-    fieldcodes = db.Column(db.Text, nullable = False)
-    fielddescriptors = db.Column(db.Text, nullable = False)
-     
-    def __repr__(self):
-        return f"Series {self.indicator_description}"
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    countrycode = sa.Column(sa.String(3), sa.ForeignKey('country.code'), nullable = False)
+    categorycode = sa.Column(sa.String(10), nullable = False)
+    dsd = sa.Column(sa.String(250), nullable = False)
+    indicator_code = sa.Column(sa.String(250), nullable = False)
+    inECOFIN = sa.Column(sa.Boolean, nullable = False)
+    indent = sa.Column(sa.Integer, nullable = False, default = 0)
+    freq = sa.Column(sa.String(1), nullable = False)
+    unit_mult = sa.Column(sa.Integer, nullable = False, default = 0)
+    indicator_description = sa.Column(sa.Text, nullable = False)
+    sdmx_data = sa.Column(sa.Text, nullable = False)
+    dates = sa.Column(sa.Text, nullable = False)
+    fieldnames = sa.Column(sa.Text, nullable = False)
+    fieldcodes = sa.Column(sa.Text, nullable = False)
+    fielddescriptors = sa.Column(sa.Text, nullable = False)
 
+    def __repr__(self):
+        return f"Series: {self.indicator_description}"

@@ -1,15 +1,26 @@
 from collections import namedtuple
 
-from flask import render_template, url_for, request
+from flask import render_template, url_for, request, _app_ctx_stack
+from sqlalchemy.orm import scoped_session
 
 from .models import Country, Categories, Series
 from . import app
+from . import Session
+from . import ReviewSession
+
+session = scoped_session(Session, scopefunc=_app_ctx_stack.__ident_func__)
+reviewSession = scoped_session(ReviewSession, scopefunc=_app_ctx_stack.__ident_func__)
 
 @app.context_processor
 def utility_processor():
     def dsd_version(signaturestring):
         Structure_Signature = namedtuple("Structure_Signature","stype,agencyID,ID,version")
-        version = min(eval(signaturestring)).version # TODO clean up
+
+        sig = eval(signaturestring) # TODO clean up
+        if type(sig) == set:
+            sig = min(sig)
+        version = sig.version
+
         if version is not None:
             return version
         else:
@@ -19,30 +30,30 @@ def utility_processor():
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', countries=Country.query.order_by(Country.name).all())
+    return render_template('home.html', countries=session.query(Country).order_by(Country.name).all())
 
 @app.route('/countryview/<countrycode>')
 def country_pages(countrycode):
     return render_template('CountryPages.html', 
-                            listitems=Categories.query.filter(Categories.countrycode==countrycode).all(), 
-                            country_info=Country.query.filter(Country.code==countrycode).first())
+                            listitems=session.query(Categories).filter(Categories.countrycode==countrycode).all(), 
+                            country_info=session.query(Country).filter(Country.code==countrycode).first())
 
 @app.route('/dataview/<countrycode>/<domain>')
 def country_domain(countrycode,domain):
-    countrydata = Series.query.filter(Series.countrycode==countrycode,Series.categorycode==domain)
-    country_info = Country.query.filter(Country.code==countrycode).first()
-    category_info = Categories.query.filter(Categories.countrycode==countrycode, Categories.categorycode==domain).first()
+    countrydata = session.query(Series).filter(Series.countrycode==countrycode,Series.categorycode==domain)
+    country_info = session.query(Country).filter(Country.code==countrycode).first()
+    category_info = session.query(Categories).filter(Categories.countrycode==countrycode, Categories.categorycode==domain).first()
     return render_template('CountryDomains.html', country_info=country_info, country=countrydata, category_info=category_info)
 
 @app.route("/report")
 def report():
-    return render_template('report.html', countries=Country.query.order_by(Country.name).all())
+    return render_template('report.html', countries=session.query(Country).order_by(Country.name).all())
 
 @app.route('/reportview/<countrycode>')
 def country_report(countrycode):
     #TODO clean this up
-    country = Country.query.filter(Country.code==countrycode).first()
-    datadomains = Categories.query.filter(Categories.countrycode==countrycode).all()
+    country = session.query(Country).filter(Country.code==countrycode).first()
+    datadomains = session.query(Categories).filter(Categories.countrycode==countrycode).all()
     domainreport = []
     total = [0,0,0,0]
     for domain in datadomains:
@@ -66,3 +77,25 @@ def country_report(countrycode):
 @app.route("/about")
 def about():
     return render_template('layout.html')#"<h1>Allen made this!<h1>"
+
+@app.route("/review")
+def review():
+    return render_template('ReviewHome.html', countries=reviewSession.query(Country).order_by(Country.name).all())
+
+@app.route('/reviewcountryview/<countrycode>')
+def review_country_pages(countrycode):
+    return render_template('ReviewCountryPages.html', 
+                            listitems=reviewSession.query(Categories).filter(Categories.countrycode==countrycode).all(), 
+                            country_info=reviewSession.query(Country).filter(Country.code==countrycode).first())
+
+@app.route('/reviewdataview/<countrycode>/<domain>')
+def review_country_domain(countrycode,domain):
+    countrydata = reviewSession.query(Series).filter(Series.countrycode==countrycode,Series.categorycode==domain)
+    country_info = reviewSession.query(Country).filter(Country.code==countrycode).first()
+    category_info = reviewSession.query(Categories).filter(Categories.countrycode==countrycode, Categories.categorycode==domain).first()
+    return render_template('CountryDomains.html', country_info=country_info, country=countrydata, category_info=category_info)
+
+@app.teardown_appcontext
+def remove_session(*args, **kwargs):
+    session.remove()
+    reviewSession.remove()
