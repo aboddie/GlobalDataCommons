@@ -87,7 +87,7 @@ def about():
 
 @app.route("/review")
 def review():
-    return render_template('Home.html', 
+    return render_template('home.html', 
                             countries=reviewSession.query(Country).order_by(Country.name).all(),
                             link_to='review_country_pages')
 
@@ -107,7 +107,7 @@ def review_country_domain(countrycode,domain):
 
 @app.route("/baseline")
 def baseline():
-    return render_template('Home.html', 
+    return render_template('home.html', 
                             countries=baselineSession.query(Country).order_by(Country.name).all(),
                             link_to='baseline_country_pages')
 
