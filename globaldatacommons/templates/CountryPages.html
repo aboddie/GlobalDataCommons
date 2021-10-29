@@ -52,7 +52,7 @@
 							<a class="btn btn-outline-primary btn-sm" href="{{items.url}}" role="button" target="_blank" rel="noopener noreferrer">SDMX File</a>
 						</div>
 						<div>
-							<a class="btn btn-outline-primary btn-sm" href="{{url_for('country_domain', countrycode = items.countrycode, domain = items.categorycode)}}" role="button">View Data</a>
+							<a class="btn btn-outline-primary btn-sm" href="{{url_for(link_to, countrycode = items.countrycode, domain = items.categorycode)}}" role="button">View Data</a>
 						</div>
 					</div>
 				</div>

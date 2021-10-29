@@ -15,4 +15,7 @@ Session = sessionmaker(engine)
 review_engine = create_engine(os.environ['SQLAZURECONNSTR_GDC_database_STG'])
 ReviewSession = sessionmaker(review_engine)
 
+baseline_engine = create_engine(os.environ['SQLAZURECONNSTR_GDC_database_baseline'])
+BaselineSession = sessionmaker(baseline_engine)
+
 from . import routes
