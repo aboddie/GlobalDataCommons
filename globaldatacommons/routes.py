@@ -19,12 +19,9 @@ def utility_processor():
         Structure_Signature = namedtuple("Structure_Signature","stype,agencyID,ID,version")
         try:
             sig = eval(signaturestring) # TODO clean up
-            if type(sig) == set:
-                sig = min(sig)
             version = sig.version
         except:
             version = None
-
         if version is not None:
             return version
         else:
@@ -54,13 +51,17 @@ def country_domain(countrycode,domain):
 
 @app.route("/report")
 def report():
-    return render_template('report.html', countries=session.query(Country).order_by(Country.name).all())
+    return render_template('report.html', countries=session.query(Country).order_by(Country.name).all(), link_to='country_report')
 
 @app.route('/reportview/<countrycode>')
 def country_report(countrycode):
-    #TODO clean this up
     country = session.query(Country).filter(Country.code==countrycode).first()
     datadomains = session.query(Categories).filter(Categories.countrycode==countrycode).all()
+    domainreport, total = report_data(country, datadomains)
+    return render_template('CountryReport.html', country=domainreport, total=total, link_to='country_domain')
+
+def report_data(country, datadomains):
+    # TODO clean this up
     domainreport = []
     total = [0,0,0,0]
     for domain in datadomains:
@@ -79,7 +80,7 @@ def country_report(countrycode):
         total[3] = f'{total[0]/country.series_count:.1%}'
     except ZeroDivisionError:
         total[3] = "N.A."
-    return render_template('CountryReport.html', country=domainreport, total=total)
+    return domainreport,total
 
 @app.route("/about")
 def about():
@@ -105,6 +106,17 @@ def review_country_domain(countrycode,domain):
     category_info = reviewSession.query(Categories).filter(Categories.countrycode==countrycode, Categories.categorycode==domain).first()
     return render_template('CountryDomains.html', country_info=country_info, country=countrydata, category_info=category_info)
 
+@app.route("/reviewreport")
+def review_report():
+    return render_template('report.html', countries=reviewSession.query(Country).order_by(Country.name).all(), link_to='review_country_report')
+
+@app.route('/reviewreportview/<countrycode>')
+def review_country_report(countrycode):
+    country = reviewSession.query(Country).filter(Country.code==countrycode).first()
+    datadomains = reviewSession.query(Categories).filter(Categories.countrycode==countrycode).all()
+    domainreport, total = report_data(country, datadomains)
+    return render_template('CountryReport.html', country=domainreport, total=total, link_to='review_country_domain')
+
 @app.route("/baseline")
 def baseline():
     return render_template('home.html', 
@@ -124,6 +136,17 @@ def baseline_country_domain(countrycode,domain):
     country_info = baselineSession.query(Country).filter(Country.code==countrycode).first()
     category_info = baselineSession.query(Categories).filter(Categories.countrycode==countrycode, Categories.categorycode==domain).first()
     return render_template('CountryDomains.html', country_info=country_info, country=countrydata, category_info=category_info)
+
+@app.route("/baselinereport")
+def baseline_report():
+    return render_template('report.html', countries=baselineSession.query(Country).order_by(Country.name).all(), link_to='baseline_country_report')
+
+@app.route('/baselinereportview/<countrycode>')
+def baseline_country_report(countrycode):
+    country = baselineSession.query(Country).filter(Country.code==countrycode).first()
+    datadomains = baselineSession.query(Categories).filter(Categories.countrycode==countrycode).all()
+    domainreport, total = report_data(country, datadomains)
+    return render_template('CountryReport.html', country=domainreport, total=total, link_to='baseline_country_domain')
 
 @app.teardown_appcontext
 def remove_session(*args, **kwargs):

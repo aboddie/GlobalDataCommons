@@ -5,7 +5,7 @@
 {% block leftlistcontent %}
 	{%for country in countries%}
 		{% if country.countrystandard == 'eGDDS' %}
-            <a href="{{url_for('country_report', countrycode = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
+            <a href="{{url_for(link_to, countrycode = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
 		{% endif %}
 	{% endfor %}
 {% endblock leftlistcontent %}
@@ -15,7 +15,7 @@
 {% block middlelistcontent %}
 	{%for country in countries%}
 		{% if country.countrystandard == 'SDDS' %}
-            <a href="{{url_for('country_report', countrycode = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
+            <a href="{{url_for(link_to, countrycode = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
 		{% endif %}
 	{% endfor %}
 {% endblock middlelistcontent %}
@@ -25,7 +25,7 @@
 {% block rightlistcontent %}
 	{%for country in countries%}
 		{% if country.countrystandard == 'SDDS Plus' %}
-            <a href="{{url_for('country_report', countrycode = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
+            <a href="{{url_for(link_to, countrycode = country.code)}}" class="list-group-item list-group-item-light">{{country.name}} Report</a>
 		{% endif %}
 	{% endfor %}
 {% endblock rightlistcontent %}
