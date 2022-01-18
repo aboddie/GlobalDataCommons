@@ -71,7 +71,10 @@ def report_data(country, datadomains):
             num = domain.series_count
             numtrue = domain.readable_series
             numfalse = num - numtrue
-            precent = f'{numtrue/num:.1%}'
+            try:
+                precent = f'{numtrue/num:.1%}'
+            except ZeroDivisionError:
+                precent = "N.A."
             domainreport.append((domain.description, numtrue, numfalse, num, precent, domain.categorycode, domain.countrycode))
             total[0] += numtrue
     try: 
