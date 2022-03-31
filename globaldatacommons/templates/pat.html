@@ -6,7 +6,9 @@
 
 {% block bodycontent %}
 	<!-- chart canvas element -->
-	<canvas id="myChart"></canvas>
+    <div class="content-section">
+	    <canvas id="myChart"></canvas>
+    </div>
     <script>
 	// get chart canvas
 	var ctx = document.getElementById("myChart").getContext("2d");
@@ -25,6 +27,7 @@
       options: {
         scaleShowValues: true, 
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             xAxes: [{
             ticks: {
