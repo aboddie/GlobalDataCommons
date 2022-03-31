@@ -9,16 +9,16 @@ from . import Session
 from . import ReviewSession
 from . import BaselineSession
 
+#Clean this up##
 try:
-    __indent_Func__ = _app_ctx_stack.__ident_func__
+    __indent_func__ = _app_ctx_stack.__ident_func__
 except AttributeError:
     print("using threading")
     from threading import get_ident as __indent_func__ 
-
-
-session = scoped_session(Session, scopefunc=__ident_func__)
-reviewSession = scoped_session(ReviewSession, scopefunc=__ident_func__)
-baselineSession = scoped_session(BaselineSession, scopefunc=__ident_func__)
+####
+session = scoped_session(Session, scopefunc=__indent_func__)
+reviewSession = scoped_session(ReviewSession, scopefunc=__indent_func__)
+baselineSession = scoped_session(BaselineSession, scopefunc=__indent_func__)
 
 @app.context_processor
 def utility_processor():
