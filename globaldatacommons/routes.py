@@ -12,9 +12,10 @@ from . import BaselineSession
 #Clean this up##
 try:
     __indent_func__ = _app_ctx_stack.__ident_func__
+    print(f"using _app_ctx_stack: thread {__indent_func__()}")
 except AttributeError:
-    print("using threading")
     from threading import get_ident as __indent_func__ 
+    print(f"using threading: thread {__indent_func__()}")
 ####
 session = scoped_session(Session, scopefunc=__indent_func__)
 reviewSession = scoped_session(ReviewSession, scopefunc=__indent_func__)
@@ -95,6 +96,16 @@ def report_data(country, datadomains):
 @app.route("/about")
 def about():
     return render_template('layout.html')#"<h1>Allen made this!<h1>"
+
+@app.route("/pat")
+def pat():
+    countries=session.query(Country).order_by(Country.name).all()
+    chartlabel = []
+    chartdata = []
+    for country in countries:
+        chartlabel.append(country.name)
+        chartdata.append(country.series_count)
+    return render_template('pat.html', labels=chartlabel, data=chartdata)
 
 @app.route("/review")
 def review():
