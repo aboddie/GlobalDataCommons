@@ -53,6 +53,16 @@ def country_domain(countrycode,domain):
 def report():
     return render_template('report.html', countries=session.query(Country).order_by(Country.name).all(), link_to='country_report')
 
+@app.route("/pat")
+def pat():
+    countries=session.query(Country).order_by(Country.name).all()
+    chartlabel = []
+    chartdata = []
+    for country in countries:
+        chartlabel.append(country.name)
+        chartdata.append(country.series_count)
+    return render_template('pat.html', labels=chartlabel, data=chartdata)
+
 @app.route('/reportview/<countrycode>')
 def country_report(countrycode):
     country = session.query(Country).filter(Country.code==countrycode).first()

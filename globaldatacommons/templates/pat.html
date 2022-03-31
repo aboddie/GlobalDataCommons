@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block chartplugin %}
+<script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
+{% endblock chartplugin%}
+
+{% block bodycontent %}
+	<!-- chart canvas element -->
+	<canvas id="myChart"></canvas>
+    <script>
+	// get chart canvas
+	var ctx = document.getElementById("myChart").getContext("2d");
+	 
+	// create the chart using the chart canvas
+	var myChart = new Chart(ctx, {
+	  type: 'bar',
+	  data: {
+        labels: [{% for item in labels %}'{{item}}',{% endfor %}],
+        datasets : [{
+            label:'Series Count',
+            data: {{data}},
+            backgroundColor: 'blue'
+            }],   
+      },
+      options: {
+        scaleShowValues: true, 
+        responsive: true,
+        scales: {
+            xAxes: [{
+            ticks: {
+                autoSkip: false
+            }
+            }]
+        }
+        }
+    });
+	</script>
+
+{% endblock bodycontent %}
