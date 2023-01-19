@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from flask import _app_ctx_stack
-from flask import render_template, 
+from flask import render_template 
 from flask import request
 from flask import url_for
 from sqlalchemy.orm import scoped_session
