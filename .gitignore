@@ -1,5 +1,2 @@
-globaldatacommons/__pycache__/__init__.cpython-36.pyc
-globaldatacommons/__pycache__/routes.cpython-36.pyc
-globaldatacommons/__pycache__/models.cpython-36.pyc
-__pycache__/__init__.cpython-36.pyc
-__pycache__/app.cpython-36.pyc
+globaldatacommons/__pycache__/
+__pycache__/
