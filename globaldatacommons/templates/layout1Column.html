@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block bodycontent %}
+<div class="col">			
+    <div class="content-section">
+        {% block lefttitle %}{% endblock %}
+        <ul class="list-group">
+            <div id='mylist' class="scrollbar scrollbar-primary">
+                {% block leftlistcontent %}{% endblock %}
+            </div>
+        </ul>
+    </div>
+</div>
+{% endblock bodycontent %}
