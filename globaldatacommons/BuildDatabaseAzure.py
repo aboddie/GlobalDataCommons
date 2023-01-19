@@ -46,8 +46,6 @@ class NSDPDatabase():
         Index('mycategoryindex', Series.categorycode).create(self.engine)
 
     def _updatecategorydata(self, destSession, category, DSDdict=dict()):
-        def _grabmetadata(series, metadatafield):  # TODO: drop this
-            return series.metadata.get(metadatafield, "MISSING DIMISION")
         try:
             category.lastupdated = func.now()
             SDMXfile = self._get_SDMXfile(category.url)
@@ -61,7 +59,7 @@ class NSDPDatabase():
             for currentseries in SDMXfile.series:
                 # TODO: fix check around unit mult
                 try:
-                    unit_mult = int(_grabmetadata(currentseries, 'UNIT_MULT'))
+                    unit_mult = int(currentseries.metadata.get('UNIT_MULT', "MISSING DIMISION"))
                 except ValueError:
                     raise ValueError("Contains non-integer unit_mult!")
                 metadata_names = dsd.name_from_metadata(currentseries)
@@ -79,7 +77,7 @@ class NSDPDatabase():
                         countrycode=category.countrycode,
                         categorycode=category.categorycode,
                         indicator_code='.'.join(indicatorlist),
-                        validcodes=dsd.validate_series(currentseries),  # TODO: rename
+                        validcodes=dsd.validate_series(currentseries),
                         sdmx_data=str(list(currentseries.data.values())),
                         dates=str(currentseries.time_period_coverage),
                         unit_mult=unit_mult,
