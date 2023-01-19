@@ -97,16 +97,6 @@ def report_data(country, datadomains):
 def about():
     return render_template('layout.html')#"<h1>Allen made this!<h1>"
 
-@app.route("/pat")
-def pat():
-    countries=session.query(Country).order_by(Country.name).all()
-    chartlabel = []
-    chartdata = []
-    for country in countries:
-        chartlabel.append(country.name)
-        chartdata.append(country.series_count)
-    return render_template('pat.html', labels=chartlabel, data=chartdata)
-
 @app.route("/review")
 def review():
     return render_template('home.html', 
