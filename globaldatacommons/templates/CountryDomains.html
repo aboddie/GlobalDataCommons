@@ -15,7 +15,7 @@
 
 {% block leftlistcontent %}
 	{%for mine in country%}
-		{%if mine.inECOFIN==1 %}
+		{%if mine.validcodes==1 %}
 			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}})" class="list-group-item list-group-item-light align-items-stretch flex-shrink-1">{{ mine.indicator_code }}</a> 
 		{% else %}
 			<a onclick="allenFunction({{mine.sdmx_data}},{{mine.dates}},{{mine.fieldnames}},{{mine.fieldcodes}},{{mine.fielddescriptors}})" class="list-group-item list-group-item-danger align-items-stretch flex-shrink-1">{{ mine.indicator_code }}</a> 

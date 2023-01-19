@@ -1,13 +1,18 @@
 from collections import namedtuple
 
-from flask import render_template, url_for, request, _app_ctx_stack
+from flask import _app_ctx_stack
+from flask import render_template, 
+from flask import request
+from flask import url_for
 from sqlalchemy.orm import scoped_session
 
-from .models import Country, Categories, Series
 from . import app
 from . import Session
 from . import ReviewSession
 from . import BaselineSession
+from .models import Country
+from .models import Categories
+from .models import Series
 
 #Clean this up##
 try:

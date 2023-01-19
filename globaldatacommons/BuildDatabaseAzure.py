@@ -78,20 +78,16 @@ class NSDPDatabase():
                 destSession.add(Series(
                         countrycode=category.countrycode,
                         categorycode=category.categorycode,
-                        dsd=dsd.name,  # TODO: Remove from model
                         indicator_code='.'.join(indicatorlist),
-                        inECOFIN=dsd.validate_series(currentseries),  # TODO: rename
-                        indent=0,  # TODO: Remove from model
+                        validcodes=dsd.validate_series(currentseries),  # TODO: rename
                         sdmx_data=str(list(currentseries.data.values())),
                         dates=str(currentseries.time_period_coverage),
-                        freq=_grabmetadata(currentseries, 'FREQ'), # TODO: Remove from model
                         unit_mult=unit_mult,
                         fieldnames=str([x for (x, y) in meta]),
                         fieldcodes=str([y[0] for (x, y) in meta]),
                         fielddescriptors=str([y[1] for (x, y) in meta]),
                         indicator_description=dsd.name_from_metadata(currentseries).get('INDICATOR', "Invalid code"),  # TODO: Remove from model
-                        zero_series=not currentseries.has_nonzero_data,
-                        latestdata=currentseries.last_observation))   # TODO: Remove from model
+                        zero_series=not currentseries.has_nonzero_data))
             category.has_error = False
             category.error_text = ''
         except Exception as h:
@@ -227,7 +223,7 @@ class NSDPDatabase():
         # Category Counts
         seriespercat = session.query(Series.countrycode, Series.categorycode, func.count()).group_by(Series.categorycode, Series.countrycode).all()
         seriespercat = dict([((a, b), c) for (a, b, c) in seriespercat])
-        readablepercat = session.query(Series.countrycode, Series.categorycode, func.count()).filter(Series.inECOFIN == True).group_by(Series.categorycode, Series.countrycode).all()
+        readablepercat = session.query(Series.countrycode, Series.categorycode, func.count()).filter(Series.validcodes == True).group_by(Series.categorycode, Series.countrycode).all()
         readablepercat = dict([((a, b), c) for (a, b, c) in readablepercat])
         for category in session.query(Categories):
             category.series_count = seriespercat.get((category.countrycode, category.categorycode), 0)

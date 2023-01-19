@@ -50,11 +50,8 @@ class Series(metadata_obj):
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     countrycode = sa.Column(sa.String(3), sa.ForeignKey('country.code'), nullable=False)
     categorycode = sa.Column(sa.String(10), nullable=False)
-    dsd = sa.Column(sa.String(250), nullable=False)
     indicator_code = sa.Column(sa.String(250), nullable=False)
-    inECOFIN = sa.Column(sa.Boolean, nullable=False)
-    indent = sa.Column(sa.Integer, nullable=False, default=0)
-    freq = sa.Column(sa.String(1), nullable=False)
+    validcodes = sa.Column(sa.Boolean, nullable=False)
     unit_mult = sa.Column(sa.Integer, nullable=False, default=0)
     indicator_description = sa.Column(sa.Text, nullable=False)
     sdmx_data = sa.Column(sa.Text, nullable=False)
@@ -63,7 +60,6 @@ class Series(metadata_obj):
     fieldcodes = sa.Column(sa.Text, nullable=False)
     fielddescriptors = sa.Column(sa.Text, nullable=False)
     zero_series = sa.Column(sa.Boolean, nullable=False)
-    latestdata = sa.Column(sa.String(15), nullable=False)
 
     def __repr__(self):
         return f"Series: {self.indicator_description}"
