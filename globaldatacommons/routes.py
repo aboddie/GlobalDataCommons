@@ -14,6 +14,7 @@ from .models import Country
 from .models import Categories
 from .models import Series
 
+
 #Clean this up##
 try:
     __indent_func__ = _app_ctx_stack.__ident_func__
