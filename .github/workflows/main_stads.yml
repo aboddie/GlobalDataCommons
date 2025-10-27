@@ -15,27 +15,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      # DO NOT create or upload venv. Remove the venv creation step.
-
-      - name: Install dependencies (optional local tests only)
-        if: false   # keep for local testing, disable for CI deploy to avoid packaging venv
-        run: |
-          python -m pip install -r requirements.txt
+      # Do not create or upload a venv
 
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            . 
-          # Exclude venv if present locally; explicit exclude not required here because we don't create it
+            .
+          # exclude venv if present locally; do not upload virtual env
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,7 +41,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-app
           path: .
@@ -58,5 +53,5 @@ jobs:
           app-name: 'STADS'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2FCF5DC898004FA99184C32A92575568 }}
-          package: '.'   # deploy the repo root so Oryx can run and install dependencies
+          package: '.'
 
