@@ -17,28 +17,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python version
-        uses: actions/setup-python@v1
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Create and start virtual environment
+      # DO NOT create or upload venv. Remove the venv creation step.
+
+      - name: Install dependencies (optional local tests only)
+        if: false   # keep for local testing, disable for CI deploy to avoid packaging venv
         run: |
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
+          python -m pip install -r requirements.txt
+
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: python-app
           path: |
             . 
-            !venv/
+          # Exclude venv if present locally; explicit exclude not required here because we don't create it
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,11 +46,11 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: python-app
           path: .
-          
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -61,3 +58,5 @@ jobs:
           app-name: 'STADS'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2FCF5DC898004FA99184C32A92575568 }}
+          package: '.'   # deploy the repo root so Oryx can run and install dependencies
+
